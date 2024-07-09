@@ -850,24 +850,33 @@ class ExtendedImage extends StatefulWidget {
   static Widget Function(
     BuildContext context,
     ExtendedImageState state,
+    Widget? customLoadingWidget
   ) globalStateWidgetBuilder = (
     BuildContext context,
     ExtendedImageState state,
+    Widget? customLoadingWidget
   ) {
     switch (state.extendedImageLoadState) {
       case LoadState.loading:
+        if (customLoadingWidget != null) {
+          return Container(
+            alignment: Alignment.center,
+            child: customLoadingWidget
+          );
+        }
+
         return Container(
           alignment: Alignment.center,
-          child: Theme.of(context).platform == TargetPlatform.iOS
-              ? const CupertinoActivityIndicator(
-                  animating: true,
-                  radius: 16.0,
-                )
-              : CircularProgressIndicator(
-                  strokeWidth: 2.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor),
-                ),
+          child: Theme.of(context).platform == TargetPlatform.iOS ?
+          const CupertinoActivityIndicator(
+            animating: true,
+            radius: 16.0,
+          ) :
+          CircularProgressIndicator(
+            strokeWidth: 2.0,
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor),
+          ),
         );
 
       case LoadState.completed:
@@ -960,7 +969,7 @@ class _ExtendedImageState extends State<ExtendedImage>
 
     if (current == null) {
       if (widget.enableLoadState) {
-        current = widget.customLoadingWidget ?? ExtendedImage.globalStateWidgetBuilder(context, this);
+        current = ExtendedImage.globalStateWidgetBuilder(context, this, widget.customLoadingWidget);
       } else {
         if (_loadState == LoadState.completed) {
           current = _getCompletedWidget();
