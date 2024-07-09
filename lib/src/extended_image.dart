@@ -37,6 +37,7 @@ class ExtendedImage extends StatefulWidget {
     this.gaplessPlayback = false,
     this.filterQuality = FilterQuality.low,
     this.loadStateChanged,
+    this.customLoadingWidget,
     this.border,
     this.shape,
     this.borderRadius,
@@ -212,6 +213,7 @@ class ExtendedImage extends StatefulWidget {
     String? package,
     this.filterQuality = FilterQuality.low,
     this.loadStateChanged,
+    this.customLoadingWidget,
     this.shape,
     this.border,
     this.borderRadius,
@@ -309,6 +311,7 @@ class ExtendedImage extends StatefulWidget {
     this.gaplessPlayback = false,
     this.filterQuality = FilterQuality.low,
     this.loadStateChanged,
+    this.customLoadingWidget,
     this.shape,
     this.border,
     this.borderRadius,
@@ -400,6 +403,7 @@ class ExtendedImage extends StatefulWidget {
     this.gaplessPlayback = false,
     this.filterQuality = FilterQuality.low,
     this.loadStateChanged,
+    this.customLoadingWidget,
     this.shape,
     this.border,
     this.borderRadius,
@@ -468,6 +472,7 @@ class ExtendedImage extends StatefulWidget {
     this.gaplessPlayback = false,
     this.filterQuality = FilterQuality.low,
     this.loadStateChanged,
+    this.customLoadingWidget,
     this.shape,
     this.border,
     this.borderRadius,
@@ -630,6 +635,7 @@ class ExtendedImage extends StatefulWidget {
 
   /// custom load state widget if you want
   final LoadStateChanged? loadStateChanged;
+  final Widget? customLoadingWidget;
 
   /// The image to display.
   final ImageProvider image;
@@ -954,7 +960,7 @@ class _ExtendedImageState extends State<ExtendedImage>
 
     if (current == null) {
       if (widget.enableLoadState) {
-        current = ExtendedImage.globalStateWidgetBuilder(context, this);
+        current = widget.customLoadingWidget ?? ExtendedImage.globalStateWidgetBuilder(context, this);
       } else {
         if (_loadState == LoadState.completed) {
           current = _getCompletedWidget();
